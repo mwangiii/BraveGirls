@@ -31,6 +31,22 @@ app.use(passport.session());
 app.use(express.json());
 // Import route files
 const usersRoutes = require('./routes/v1/users');
+const blogRoutes = require('./routes/v1/blog');
+const volunteeropportunityRoutes = require('./routes/v1/volunteeropportunity');
+
+
 // mount route files
 app.use('/api/v1/users/', usersRoutes);
+app.use('/api/v1/blog/', blogRoutes);
+app.use('/api/v1/volunteeropportunity/', volunteeropportunityRoutes);
+
+// add logging middleware
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      console.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${duration}ms`);
+    });
+    next(); 
+  });
 module.exports = app;
